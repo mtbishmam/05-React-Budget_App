@@ -9,6 +9,7 @@ export default function BudgetCard({
   gray,
   hideButtons,
   handleBudgetCardAddExpense,
+  onClickViewExpenses,
 }) {
   const cardClassNames = [];
   if (amount > max) {
@@ -49,7 +50,12 @@ export default function BudgetCard({
             >
               Add Expense
             </Button>
-            <Button variant="outline-secondary">View Expenses</Button>
+            <Button
+              variant="outline-secondary"
+              onClick={onClickViewExpenses}
+            >
+              View Expenses
+            </Button>
           </Stack>
         )}
       </Card.Body>
@@ -58,6 +64,7 @@ export default function BudgetCard({
 }
 
 function getProgressBarVariant(amount, max) {
+  if (!max) return null;
   const ratio = amount / max;
   if (ratio < 0.5) return "primary";
   else if (ratio < 0.75) return "warning";

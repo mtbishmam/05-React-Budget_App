@@ -5,9 +5,7 @@ import {
   useBudgets,
 } from "../contexts/BudgetsContext";
 
-export default function UncategorizedBudgetCard({
-  handleBudgetCardAddExpense,
-}) {
+export default function UncategorizedBudgetCard(props) {
   const { getBudgetExpenses } = useBudgets();
   const amount = getBudgetExpenses(UNCATEGORIZED_BUDGET_ID).reduce(
     (total, expense) => total + expense.amount,
@@ -18,7 +16,7 @@ export default function UncategorizedBudgetCard({
       name="Uncategorized"
       amount={amount}
       gray
-      handleBudgetCardAddExpense={handleBudgetCardAddExpense}
+      {...props}
     ></BudgetCard>
   );
 }
