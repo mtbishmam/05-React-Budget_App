@@ -4,10 +4,14 @@ import { Button, ButtonGroup, Container, Stack } from "react-bootstrap";
 import BudgetCard from "./components/BudgetCard";
 import AddBudgetModal from "./components/AddBudgetModal";
 import { useBudgets } from "./contexts/BudgetsContext";
+import AddExpenseModal from "./components/AddExpenseModal";
+import UncategorizedBudgetCard from "./components/UncategorizedBudgetCard";
+import TotalBudgetCard from "./components/TotalBudgetCard";
 
 function App() {
   const { budgets, getBudgetExpenses } = useBudgets();
   const [showAddBudgetModal, setShowAddBudgetModal] = useState(false);
+  const [showAddExpenseModal, setShowAddExpenseModal] = useState(false);
   return (
     <>
       <Container>
@@ -23,7 +27,12 @@ function App() {
           >
             Add Budget
           </Button>
-          <Button variant="outline-primary">Add Expense</Button>
+          <Button
+            variant="outline-primary"
+            onClick={() => setShowAddExpenseModal(true)}
+          >
+            Add Expense
+          </Button>
         </Stack>
 
         <div
@@ -46,12 +55,18 @@ function App() {
               ></BudgetCard>
             );
           })}
+          <UncategorizedBudgetCard />
+          <TotalBudgetCard />
         </div>
       </Container>
       <AddBudgetModal
         show={showAddBudgetModal}
         handleClose={() => setShowAddBudgetModal(false)}
       ></AddBudgetModal>
+      <AddExpenseModal
+        show={showAddExpenseModal}
+        handleClose={() => setShowAddExpenseModal(false)}
+      ></AddExpenseModal>
     </>
   );
 }
