@@ -1,9 +1,13 @@
 import { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Button, Container, Stack } from "react-bootstrap";
+import { Button, ButtonGroup, Container, Stack } from "react-bootstrap";
 import BudgetCard from "./components/BudgetCard";
+import AddBudgetModal from "./components/AddBudgetModal";
+import { useBudgets } from "./contexts/BudgetsContext";
 
 function App() {
+  const { budgets, getBudgetExpenses } = useBudgets();
+  const [showAddBudgetModal, setShowAddBudgetModal] = useState(false);
   return (
     <>
       <Container>
@@ -15,6 +19,7 @@ function App() {
           <Button
             variant="primary"
             className="ms-auto"
+            onClick={() => setShowAddBudgetModal(true)}
           >
             Add Budget
           </Button>
@@ -27,13 +32,26 @@ function App() {
             gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
           }}
         >
-          <BudgetCard
-            name="Entertainment"
-            amount={300}
-            max={400}
-          ></BudgetCard>
+          {budgets.map((budget) => {
+            const amount = getBudgetExpenses(budget.id).reduce(
+              (total, expense) => total + expense.amount,
+              0
+            );
+            return (
+              <BudgetCard
+                key={budget.id}
+                name={budget.name}
+                amount={amount}
+                max={budget.max}
+              ></BudgetCard>
+            );
+          })}
         </div>
       </Container>
+      <AddBudgetModal
+        show={showAddBudgetModal}
+        handleClose={() => setShowAddBudgetModal(false)}
+      ></AddBudgetModal>
     </>
   );
 }
